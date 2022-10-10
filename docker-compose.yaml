@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  pythondev:
+    container_name: CHS_DOWNLOADER_DEV
+    image: python:latest
+    volumes:
+      - .:/workspaces/chs-downloader
+    working_dir: /workspaces/chs-downloader
+    command:  pip install -r requirements.txt && tail -f /dev/null
+    tty: true
+    # entrypoint: ["bash"]
