@@ -6,6 +6,10 @@ services:
     volumes:
       - .:/workspaces/chs-downloader
     working_dir: /workspaces/chs-downloader
-    command:  pip install -r requirements.txt && tail -f /dev/null
+    command:
+      - bash
+      - -c
+      - |
+        pip install -r requirements.txt
+        bash
     tty: true
-    # entrypoint: ["bash"]
