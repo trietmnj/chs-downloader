@@ -2,14 +2,15 @@ import requests
 import argparse
 from html.parser import HTMLParser
 from bs4 import BeautifulSoup
+from selenium import webdriver
 
 
 
 def get_args() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="G2 Sqlite Database Guid Change")
+    parser = argparse.ArgumentParser(description="Download CHS data")
     parser.add_argument(
-        '-f',
-        '--folder',
+        '-o',
+        '--output_folder',
         nargs='+',
         help='Folder path i.e. where you can see "Data" and "Outputs" folder')
     return parser
@@ -46,9 +47,9 @@ def main(args: argparse.ArgumentParser) -> None:
         '__RequestVerificationToken': 'ZzN4Dq5b9enhLWtryvJewRFV1fHaEwJphvgqBtUCArqolv1zy6FwyClvxUCtEspZbG3EQHr7DCPi0AFBLxjKNDvGQVCM6mIvaWe-5INJHk01',
     }
     download_link = "https://chs.erdc.dren.mil/Study/SelectedSavePoints_DownloadGrid_DownloadSelected?study=5&fileids=390558,772190&includecsv=false&includeh5=true"
-    # download_link = "https://chs.erdc.dren.mil/Study/GetMappingPoints?level=7&extent=-80.489013%2028.253501,-80.345161%2028.403697&zoom=12&study=6&projects=28,32,36"
-    # res = requests.post(url, cookies=cookies, headers=headers, data=data)
-    res = requests.post(download_link, cookies=cookies, headers=headers, data=data)
+    # download_link = "https://chs.erdc.dren.mil/Study/GetMappingPoints?level=7&extent=-80.489013%2028.253501,-80.345161%2028.403697&zoom=12&study=6&projects=28,32,36" res = requests.post(url, cookies=cookies, headers=headers, data=data)
+    # res = requests.post(download_link, cookies=cookies, headers=headers, data=data)
+    res = requests.post(download_link, cookies=cookies, headers=headers)
     flag_login = is_login_page(res)
     print(res.text)
     print(redirect_from_login(res))
@@ -68,7 +69,9 @@ def redirect_from_login(r: requests.Response) -> tuple[str, str]:
 
     soup = BeautifulSoup(r.text, "html.parser")
 
-    token = str(soup.find("input", {"name": "__RequestVerificationToken"})["value"])
+    token = soup.find("input", {"name": "__RequestVerificationToken"})
+    token = token["value"] if token is not None else ""
+
 
     div_elem_with_child = soup.find("div", {"class": "panelx-login light-gray"}).find_child("a")
 
