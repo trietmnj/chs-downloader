@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CHS - Login</title>
+
+    <link rel="Shortcut Icon" href="/Content/img/favicon.ico" />
+
+    <link href="/Content/bootstrap.min.css?cache=-635292188" rel="stylesheet" type="text/css" />
+    <link href="/Content/telerik_mvc_v2021.1.330/css/kendo.bootstrap-v4.min.css?cache=-1019452477" rel="stylesheet"
+        type="text/css" />
+    <link href="/Content/fonts/css/fontawesome-all.min.css?cache=-635292188" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/style.css?cache=-2022942611" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/loading.css?cache=-635292188" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/project.css?cache=-43819583" rel="stylesheet" type="text/css" />
+    <link href="/Content/arcgis_js_v418_api/arcgis_js_api/library/4.18/esri/css/main.css?cache=612662762"
+        rel="stylesheet" type="text/css" />
+
+    <script src="/Scripts/underscore-min.js?cache=-635292188"></script>
+    <script src="/Scripts/jquery.min.js?cache=10/6/2022 7:31:48 AM"></script>
+    <script src="/Content/telerik_mvc_v2021.1.330/js/jszip.min.js?cache=-1106179784"></script>
+    <script src="/Content/telerik_mvc_v2021.1.330/js/kendo.all.min.js?cache=-1106123623"></script>
+    <script src="/Content/telerik_mvc_v2021.1.330/js/kendo.aspnetmvc.min.js?cache=-1106060622"></script>
+    <script src="/Scripts/bootstrap.min.js?cache=-635292188"></script>
+    <script src="/Scripts/js/script.js?cache=44019248"></script>
+    <script src="/Content/d3/d3.min.js?cache=-2043944760"></script>
+    <script src="/Content/arcgis_js_v418_api/arcgis_js_api/library/4.18/init.js?cache=784628486"></script>
+    <script src="/Scripts/kendo.modernizr.custom.js?cache=-635292188"></script>
+</head>
+
+<body>
+    <input name="__RequestVerificationToken" type="hidden"
+        value="MrQxAIKOO8dcW8q6Ibl3ivLgd4dcdf6semI16n0VFnjfpp_WcMU5peLYEl904xqobe29hfdP73ByElZfR86b3xoVEdTIroom5gXQHzlIojU1" />
+
+
+
+    <!-- Header -->
+    <!--<div class="topclass">HIGHEST POSSIBLE CLASSIFICATION IS UNCLASSIFIED // FOR OFFICIAL USE ONLY</div>-->
+    <div class="logo secondary">
+        <div class="containerx">
+            <div class="logo-img"></div>
+            <p>Coastal Hazards<br />System, v2.0</p>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="navx">
+        <div class="navbarx" id="myTopnav">
+            <a href="/Home/Index">Home</a>
+            <div class="dropdownx">
+                <button class="dropbtn" onclick="window.location.href='/Home/WebTool'">Web-Tool</button>
+                <div class="dropdownx-content">
+                    <a href="/Location/Index">Location</a>
+                    <a href="/Storm/Index">Storm</a>
+                    <a href="/Study/Index">Study</a>
+                </div>
+            </div>
+            <a href="/Home/Studies">Studies</a>
+            <a href="/Home/Tools">Tools</a>
+            <a href="/Home/Library">Library</a>
+            <div class="dropdownx">
+                <button class="dropbtn" onclick="window.location.href='/Home/Help'">Help</button>
+                <div class="dropdownx-content">
+                    <a href="/Home/AboutUs">About Us</a>
+                    <a href="/Home/Contacts">Contacts</a>
+                    <a href="/Content/documents/CHSFactSheet.pdf" target="_blank">Fact Sheet</a>
+                    <a href="/Content/documents/CHSFAQ.pdf" target="_blank">FAQ</a>
+                    <a href="/Content/documents/CHSQuickGuide.pdf" target="_blank">Quick Start Guide</a>
+                    <a href="/Home/Updates">Updates</a>
+                    <a href="/Content/documents/CHSUserGuide.pdf" target="_blank">User Guide</a>
+                </div>
+            </div>
+
+            <!--<a href="https://stormsim.erdc.dren.mil/Login/Register" target="_blank">Register</a>-->
+            <a class="activex" href="/Login/Login">Login</a>
+
+            <a href="javascript:void(0);" class="icon" onclick="toggleMobileMenu()">&#9776;</a>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="containerx">
+        <div class="content">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/Home/Index"><i class="glyph home-solid"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Login</li>
+                </ol>
+            </nav>
+
+            <div class="cardx light-gray">
+                <div class="cardx-text">
+                    <p class="red bold">
+                        CHS performs best in Chrome, Edge, Firefox and Safari. Internet Explorer is no longer supported
+                        due to Microsoft's End-of-Life support.
+                    </p>
+                </div>
+            </div>
+            <div class="cardx light-gray">
+                <div class="cardx-text">
+                    <p>
+                        You are accessing a U.S. Government (USG) Information System (IS) that is provided for
+                        USG-authorized use only.
+                    </p>
+                    <p>
+                        By using this IS (which includes any device attached to this IS), you consent to the following
+                        conditions:
+                    </p>
+                    <p>
+                        -The USG routinely intercepts and monitors communications on this IS for purposes including, but
+                        not limited to, penetration testing, COMSEC monitoring, network operations and defense,
+                        personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI)
+                        investigations.<br />
+                        - At any time, the USG may inspect and seize data stored on this IS.<br />
+                        - Communications using, or data stored on, this IS are not private, are subject to routine
+                        monitoring, interception, and search, and may be disclosed or used for any USG-authorized
+                        purpose.<br />
+                        - This IS includes security measures (e.g., authentication and access controls) to protect USG
+                        interests—not for your personal benefit or privacy.<br />
+                        - Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI
+                        investigative searching or monitoring of the content of privileged communications, or work
+                        product, related to personal representation or services by attorneys, psychotherapists, or
+                        clergy, and their assistants. Such communications and work product are private and confidential.
+                        See User Agreement for details.
+                    </p>
+                </div>
+            </div>
+            <div class="cardx white">
+                <!--
+            <div class="panelx-login light-gray">
+<form action="/Login/Login?ReturnUrl=%2FStudy%2FGetMappingPoints%3Flevel%3D7%26extent%3D-80.489013%252028.253501%2C-80.345161%252028.403697%26zoom%3D12%26study%3D6%26projects%3D28%2C32%2C36&amp;level=7&amp;extent=-80.489013%2028.253501,-80.345161%2028.403697&amp;zoom=12&amp;study=6&amp;projects=28,32,36" method="post">                    <div>
+                        <fieldset>
+                            <div class="label">
+                                <label for="UserName">User Name</label>
+                            </div>
+                            <div>
+                                <input data-val="true" data-val-required="The User Name field is required." id="UserName" maxlength="15" name="UserName" type="text" value="" />
+                            </div>
+                            <div class="label">
+                                <label for="Password">Password</label>
+                            </div>
+                            <div>
+                                <input data-val="true" data-val-required="The Password field is required." id="Password" name="Password" type="password" />
+                            </div>
+                            <br />
+                            <p>
+                                <button class="btn btn-success">Log On</button>
+                            </p>
+                            <div class="red bold">
+
+                            </div>
+                            <div class="red">
+                                <span class="field-validation-valid" data-valmsg-for="UserName" data-valmsg-replace="true"></span>
+                            </div>
+                            <div class="red">
+                                <span class="field-validation-valid" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+                            </div>
+                        </fieldset>
+                    </div>
+</form>            </div>
+            -->
+                <div class="panelx-login light-gray">
+                    <a
+                        href="/Login/LoginGuest?ReturnUrl=%2FStudy%2FGetMappingPoints%3Flevel%3D7%26extent%3D-80.489013%252028.253501%2C-80.345161%252028.403697%26zoom%3D12%26study%3D6%26projects%3D28%2C32%2C36">
+                        <img src="/Content/img/login/account-guest.png" alt="Guest Login" />
+                    </a>
+                </div>
+                <!--
+            <div class="panelx-login light-gray">
+                <a href="/Login/LoginCAC?ReturnUrl=%2FStudy%2FGetMappingPoints%3Flevel%3D7%26extent%3D-80.489013%252028.253501%2C-80.345161%252028.403697%26zoom%3D12%26study%3D6%26projects%3D28%2C32%2C36">
+                    <img src="/Content/img/login/account-cac.png" alt="CAC Login" />
+                </a>
+            </div>
+            -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <!--
+<div class="rowx footerx">
+    <div class="containerx">
+        <p><b>WARNING! YOU ARE ACCESSING A U.S. GOVERNMENT (USG) INFORMATION SYSTEM (IS) THAT IS PROVIDED FOR USG-AUTHORIZED USE ONLY.</b></p>
+        By using this IS (which includes any device attached to this IS), you consent to the following conditions: The USG routinely intercepts and monitors communications on this IS for purposes including,
+        but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations. At any time,
+        the USG may inspect and seize data stored on this IS. Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed
+        or used for any USG-authorized purpose. This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy. Notwithstanding
+        the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation
+        or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential.
+    </div>
+    <p class="center"><img src="/Content/img/logos/erdc-logo.png" alt="Engineer Research and Development Center (ERDC)" /></p>
+</div>
+-->
+    <footer id="site-footer">
+        <div id="essayons"><span>ESSAYONS</span></div>
+        <div id="skin-footer-background">
+            <div class="containerx">
+                <div class="containerx-fluid">
+                    <div class="rowx-footer">
+                        <div class="col-md-12 col-lg-6">
+                            <div class="footer-description">
+                                <div class="rowx-footer">
+                                    <div class="col-md-6 col-lg-12">
+                                        <div class="footer-title">Our Mission</div>
+                                        <p>The mission of the U.S. Army Corps of Engineers is to deliver vital public
+                                            and military engineering services; partnering in peace and war to strengthen
+                                            our nation’s security, energize the economy and reduce risks from disasters.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 col-lg-12">
+                                        <div class="footer-title">About the Engineer Research and Development Center
+                                            Website</div>
+                                        <p>The official public website of the U.S. Army Engineer Research and
+                                            Development Center (ERDC). For website corrections, write to
+                                            erdcpao@usace.army.mil</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-4">
+                            <div class="footer-links">
+                                <div class="social-icons">
+                                    <a href="https://www.facebook.com/ArmyERDC" title="Facebook" target="_blank"
+                                        rel="noopener"><i class="glyph-footer facebook-square-brands"></i></a>
+                                    <a href="https://twitter.com/ArmyERDC" title="Twitter" target="_blank"
+                                        rel="noopener"><i class="glyph-footer twitter-brands"></i></a>
+                                    <a href="https://www.youtube.com/channel/UCOzP8XVC51KuN9YxMxYYLAg" title="YouTube"
+                                        target="_blank" rel="noopener"><i
+                                            class="glyph-footer youtube-square-brands"></i></a>
+                                    <a href="https://www.instagram.com/armyerdc/" title="Instagram" target="_blank"
+                                        rel="noopener"><i class="glyph-footer instagram-brands"></i></a>
+                                    <a href="https://www.linkedin.com/company/armyerdc/" title="LinkedIn"><i
+                                            class="glyph-footer linkedin-brands"></i></a>
+                                    <a href="https://www.flickr.com/photos/184643240@N04/" title="Flickr"
+                                        target="_blank" rel="noopener"><i class="glyph-footer flickr-brands"></i></a>
+                                </div>
+                                <div class="footer-title"></div>
+                                <div class="footer-text-links link-rows">
+                                    <ul class="">
+                                        <li class=""><a href="https://dodcio.defense.gov/DoDSection508/Std_Stmt.aspx"
+                                                title="Accessibility" target="_blank" rel="noopener"><span
+                                                    class="text text-link-277">Accessibility</span></a></li>
+                                        <li class=""><a href="https://www.erdc.usace.army.mil/Contact.aspx"
+                                                title="Contact Us"><span class="text text-link-339">Contact
+                                                    Us</span></a></li>
+                                        <li class=""><a href="https://www.usace.army.mil/InformationQualityAct.aspx"
+                                                title="U.S. Army Corps of Engineers  Information Quality"
+                                                target="_blank" rel="noopener"><span class="text text-link-463">Quality
+                                                    Facts</span></a></li>
+                                        <li class=""><a href="https://www.usace.army.mil/LinkDisclaimer.aspx"
+                                                title="Link Disclaimer" target="_blank" rel="noopener"><span
+                                                    class="text text-link-525">Link Disclaimer</span></a></li>
+                                        <li class=""><a href="https://prhome.defense.gov/nofear" title="No Fear Act"
+                                                target="_blank" rel="noopener"><span class="text text-link-587">No Fear
+                                                    Act</span></a></li>
+                                        <li class=""><a href="https://www.usace.army.mil/PrivacyandSecurity.aspx"
+                                                title="Privacy &amp; Security" target="_blank" rel="noopener"><span
+                                                    class="text text-link-649">Privacy &amp; Security</span></a></li>
+                                        <li class=""><a href="https://www.erdc.usace.army.mil/SiteMap.aspx"
+                                                title="Site Map"><span class="text text-link-770">Site Map</span></a>
+                                        </li>
+                                        <li class=""><a href="https://www.usa.gov/" title="USA.gov" target="_blank"
+                                                rel="noopener"><span class="text text-link-832">USA.gov</span></a></li>
+                                        <li class=""><a href="http://www.esd.whs.mil/DD/plainlanguage"
+                                                title="Plain Language" target="_blank" rel="noopener"><span
+                                                    class="text text-link-1308">Plain Language</span></a></li>
+                                        <li class=""><a href="https://open.defense.gov/"
+                                                title="Honest Leadership and Open Government Act" target="_blank"
+                                                rel="noopener"><span class="text text-link-1309">Open
+                                                    Government</span></a></li>
+                                        <li class=""><a href="https://www.usace.army.mil/Careers/EEO/"
+                                                title="U.S. Army Corps of Engineers Equal Employment &amp; The Army's Sexual Harassment/Assault Response and Prevention (SHARP) Program "
+                                                target="_blank" rel="noopener"><span class="text text-link-1310">EEO
+                                                    &amp; SHARP</span></a></li>
+                                        <li class=""><a
+                                                href="https://www.erdc.usace.army.mil/Business-With-Us/Small-Business/"
+                                                title=" U.S. Army Engineer Research and Development Center (ERDC) Small Business Support"><span
+                                                    class="text text-link-1311">Small Business</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-2">
+                            <div class="footer-text-links offsite-links">
+                                <a href="https://www.army.mil" target="_blank" rel="noopener"><img
+                                        src="/Content/img/logos/army-logo-color.png"></a>
+                                <ul class="">
+                                    <li class=""><a href="https://www.erdc.usace.army.mil/Contact/RSS/"
+                                            title="RSS Feeds for Engineer Research and Development Center, U.S. Army Corps of Engineers"><span
+                                                class="text text-link-1363">RSS</span></a></li>
+                                    <li class=""><a href="https://www.usace.army.mil/Engineer-Inspector-General/"
+                                            title="U.S. Army Corps of Engineers Inspector General " target="_blank"
+                                            rel="noopener"><span class="text text-link-1306">IG </span></a></li>
+                                    <li class=""><a href="https://www.usace.army.mil/FOIA.aspx"
+                                            title="U.S. Army Corps of Engineers Freedom of Information" target="_blank"
+                                            rel="noopener"><span class="text text-link-1307">FOIA</span></a></li>
+                                    <li class=""><a href="https://www.inscom.army.mil/isalute/" title="iSALUTE"
+                                            target="_blank" rel="noopener"><span
+                                                class="text text-link-956">iSALUTE</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--<div class="bottomclass">HIGHEST POSSIBLE CLASSIFICATION IS UNCLASSIFIED // FOR OFFICIAL USE ONLY</div>-->
+
+    <div id="loadingmaskx" class="loadingmaskx">
+        <div class="loaderx">
+            <div class="spinnerx" />
+        </div>
+    </div>
+    <div id="modal"></div>
+    <script>
+        kendo.syncReady(function () {jQuery("#modal").kendoWindow({"close": onClose_modal, "modal": true, "iframe": false, "draggable": false, "scrollable": true, "pinned": false, "title": {"text": ""}, "resizable": false, "width": "80%", "height": "80%", "actions": ["Close"]});});
+    </script>
+    <script>
+        AddAntiForgeryToken = function (data) {
+            data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+            return data;
+        };
+    </script>
+</body>
+
+</html>

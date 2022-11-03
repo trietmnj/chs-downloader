@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  pythondev:
+    container_name: CHS_DOWNLOADER_DEV
+    image: python:latest
+    volumes:
+      - .:/workspaces/chs-downloader
+    working_dir: /workspaces/chs-downloader
+    environment:
+      - PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/workspaces/
+    command:
+      - bash
+      - -c
+      - |
+        echo "deb http://deb.debian.org/debian/ unstable main contrib non-free" >> /etc/apt/sources.list.d/debian.list
+        apt-get update
+        apt-get install -y --no-install-recommends firefox
+        pip install -r requirements.txt
+        wget https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz -P /workspaces/
+        cd /workspaces/
+        tar -xvzf geckodriver-v0.31.0-linux64.tar.gz
+        chmod +x geckodriver
+        bash
+    tty: true
