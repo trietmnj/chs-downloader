@@ -2,10 +2,13 @@ import requests
 import argparse
 from html.parser import HTMLParser
 from bs4 import BeautifulSoup
+import selenium
 from selenium import webdriver
 from seleniumrequests import Firefox as WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
+import urllib.parse
+import json
 
 debug = True
 
@@ -19,16 +22,17 @@ links = {
 
         # query string params: level, extent, zoom, study
         # form data param: __RequestVerificationToken
-        "mapping_points": "https://chs.erdc.dren.mil/Storm/GetMappingPoints?level=7&extent=-72.137498%2040.817117,-71.930817%2041.240314&zoom=11&study=5"
+        "mapping_points": "https://chs.erdc.dren.mil/Storm/GetMappingPoints?study=5&level=7&zoom=11&&extent={extent}",
+        "mapping_points_test": "https://chs.erdc.dren.mil/Storm/GetMappingPoints?level=7&extent=-72.137498%2040.817117,-71.930817%2041.240314&zoom=11&study=5",
         }
 
 def get_args() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Download CHS data")
-    parser.add_argument(
-        '-o',
-        '--output_folder',
-        nargs='+',
-        help='Folder path i.e. where you can see "Data" and "Outputs" folder')
+    # parser.add_argument(
+    #     '-o',
+    #     '--output_folder',
+    #     nargs='+',
+    #     help='Folder path i.e. where you can see "Data" and "Outputs" folder')
     return parser
 
 def main(args: argparse.ArgumentParser) -> None:
@@ -71,52 +75,107 @@ def main(args: argparse.ArgumentParser) -> None:
     options = Options()
     options.add_argument("--headless")
     # driver = webdriver.Firefox(options=options)
-    driver = WebDriver()
-    # driver.get(download_link)
-
-    # if is_login_page(driver): continue_from_login(driver)
+    driver = WebDriver(options=options)
+    # driver = WebDriver()
 
     driver.get(links["login"])
 
     token = ""
-    map_link = "https://chs.erdc.dren.mil/Storm"
-    print("Loading storm map")
-    driver.get(map_link)
+    # map_link = "https://chs.erdc.dren.mil/Storm"
+    # print("Loading storm map")
+    # driver.get(map_link)
 
+    print(f"GET endpoint: {links['login']}")
+    driver.get(links["login"])
     token = parse_token(driver)
 
     # continuing on from login page
     if is_login_page(driver):
         if debug: print("Reached login page, continuing on...")
         continue_from_login(driver)
-        print(token)
+        # print(token)
 
     # close down disclaimer prompt
-    print("Closing disclaimer")
-    disclaimer_x = driver.find_element(By.CLASS_NAME, "k-window-action")
-    disclaimer_x.click()
+    try:
+        disclaimer_x = driver.find_element(By.CLASS_NAME, "k-window-action")
+        print("Closing disclaimer")
+        disclaimer_x.click()
+    except Exception:
+        print("Unable to find disclaimer prompt, moving on...")
 
     print("Loading points")
-    # points_res = requests.post(links["mapping_points"], headers={"User-Agent": "Mozilla/5.0"}, data={"__RequestVerificationToken" : token})
 
-    points = driver.request("POST", links["mapping_points"], data={"__RequestVerificationToken" : token})
-    print(points.json())
+    # points = query_point_link(driver, token, [-72.137498, 40.817117, -71.930817, 41.240314])
+    points = query_point_link(driver, token, [-75., 38., -74., 39.])
+    # print(points)
 
-    # file = "out/meta.json"
-    # with open(file, "wb") as file:
-    #     file.write(res.content)
+    file = "out/points.json"
+    with open(file, "w") as file:
+        json.dump(points, file)
+        # if type(points) == dict:
+        #     json.dumps(points, file)
+        # else:
+        #     file.write(points)
+
     driver.quit()
 
+
+######################
+#   Query
+######################
+
+def query_point_link(d: WebDriver, token: str, bbox: list[float]) -> dict:
+    """ Get a dictionary of save points available within bbox """
+    if len(bbox) != 4:
+        raise Exception("bbox must be of length 4")
+    else:
+        print(f"Retrieving points in bbox={bbox}")
+        bbox_str = urllib.parse.quote(f'{bbox[0]} {bbox[1]}') + ',' + urllib.parse.quote(f'{bbox[2]} {bbox[3]}')
+        url = links["mapping_points"].replace("{extent}", bbox_str)
+        print(f'POSTing to endpoint: {url}')
+        headers = {
+                'Content-Length': b'135'
+                }
+        points = d.request("POST", url, data={"__RequestVerificationToken" : token}, headers=headers)
+        # print(points.content)
+        data = points.json()
+        print(data)
+        print(f"Retrieved {len(data['Output']['Graphics'])} points")
+        return {"Points": data["Output"]["Graphics"]}
+
+
+######################
+#   Parse
+######################
+
 def parse_token(d: WebDriver) -> str:
-    elem = d.find_element(By.XPATH, "html/body/input")
-    print(elem.get_attribute("value"))
-    return elem.get_attribute("value")
+    """Parse __RequestVerificationToken"""
+    print('Parsing token')
+    try:
+        elem = d.find_element(By.XPATH, "html/body/input")
+        print(f'Found token: {elem.get_attribute("value")}')
+        return elem.get_attribute("value")
+    except Exception as e:
+        print("Unable to parse token")
+        raise e
 
 def is_login_page(d: WebDriver) -> bool:
     """ Check whether page was rerouted to login """
-    # test_phrase = "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only."
-    # return test_phrase in r.text
-    return "CHS - Login" in d.title
+
+    test_prompt = "CHS - Login"
+
+    # handle random alert
+    try:
+        alert = d.switch_to.alert
+        alert.accept()
+        print("Encountered random alert, clicking accept...")
+    except selenium.common.exceptions.NoAlertPresentException:
+        pass
+    return test_prompt in d.title
+
+######################
+#   Action
+######################
 
 def continue_from_login(d: WebDriver) -> None:
     """ Take a response of a possible login page, parse and
@@ -124,15 +183,6 @@ def continue_from_login(d: WebDriver) -> None:
 
     elem = d.find_element(By.XPATH, "html/body/div[3]/div[1]/div[3]/div/a")
     elem.click()
-    # print(elem)
-
-    # soup = BeautifulSoup(r.text, "html.parser")
-    # token = soup.find("input", {"name": "__RequestVerificationToken"})
-    # token = token["value"] if token is not None else ""
-    # div_elem_with_child = soup.find("div", {"class": "panelx-login light-gray"}).find_child("a")
-    # path = div_elem_with_child["href"] if div_elem_with_child else ""
-
-    # return token, path
 
 
 if __name__ == "__main__":
