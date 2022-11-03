@@ -12,6 +12,9 @@ services:
       - bash
       - -c
       - |
+        echo "deb http://deb.debian.org/debian/ unstable main contrib non-free" >> /etc/apt/sources.list.d/debian.list
+        apt-get update
+        apt-get install -y --no-install-recommends firefox
         pip install -r requirements.txt
         wget https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz -P /workspaces/
         cd /workspaces/
