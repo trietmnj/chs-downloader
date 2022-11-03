@@ -1,14 +1,13 @@
-import requests
 import argparse
-from html.parser import HTMLParser
-from bs4 import BeautifulSoup
+import json
+import requests
+import urllib.parse
+
 import selenium
 from selenium import webdriver
-from seleniumrequests import Firefox as WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
-import urllib.parse
-import json
+from seleniumrequests import Firefox as WebDriver
 
 debug = True
 
@@ -78,22 +77,40 @@ def main(args: argparse.ArgumentParser) -> None:
     driver = WebDriver(options=options)
     # driver = WebDriver()
 
-    driver.get(links["login"])
+    token = establish_session(driver)
 
+    print("Loading points")
+
+    # TODO - change point query bounding box here
+    points = query_point_link(driver, token, [-75., 38., -74., 39.])
+    # print(points)
+
+    # file = "out/points.json"
+    # with open(file, "w") as file:
+    #     json.dump(points, file)
+    #     # if type(points) == dict:
+    #     #     json.dumps(points, file)
+    #     # else:
+    #     #     file.write(points)
+
+    driver.quit()
+
+
+######################
+#   Query
+######################
+
+def establish_session(d: WebDriver) -> str:
+    """Login and return token"""
     token = ""
-    # map_link = "https://chs.erdc.dren.mil/Storm"
-    # print("Loading storm map")
-    # driver.get(map_link)
-
-    print(f"GET endpoint: {links['login']}")
-    driver.get(links["login"])
-    token = parse_token(driver)
+    print(f"Establishing session, GETting endpoint: {links['login']}")
+    d.get(links["login"])
+    token = parse_token(d)
 
     # continuing on from login page
-    if is_login_page(driver):
+    if is_login_page(d):
         if debug: print("Reached login page, continuing on...")
-        continue_from_login(driver)
-        # print(token)
+        continue_from_login(d)
 
     # close down disclaimer prompt
     try:
@@ -103,26 +120,7 @@ def main(args: argparse.ArgumentParser) -> None:
     except Exception:
         print("Unable to find disclaimer prompt, moving on...")
 
-    print("Loading points")
-
-    # points = query_point_link(driver, token, [-72.137498, 40.817117, -71.930817, 41.240314])
-    points = query_point_link(driver, token, [-75., 38., -74., 39.])
-    # print(points)
-
-    file = "out/points.json"
-    with open(file, "w") as file:
-        json.dump(points, file)
-        # if type(points) == dict:
-        #     json.dumps(points, file)
-        # else:
-        #     file.write(points)
-
-    driver.quit()
-
-
-######################
-#   Query
-######################
+    return token
 
 def query_point_link(d: WebDriver, token: str, bbox: list[float]) -> dict:
     """ Get a dictionary of save points available within bbox """
